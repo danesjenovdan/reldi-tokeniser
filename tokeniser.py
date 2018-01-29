@@ -14,7 +14,7 @@ def read_abbrevs(file):
   abbrevs={'B':[],'N':[],'S':[]}
   for line in open(os.path.join(reldir,file)):
     if not line.startswith('#'):
-      abbrev,type=line.decode('utf8').strip().split('\t')[:2]
+      abbrev,type=line.strip().split('\t')[:2]
       abbrevs[type].append(abbrev)
   return abbrevs
 
@@ -27,11 +27,11 @@ abbrevs={
 num=r'(?:(?<!\d)[+-])?\d+(?:[.,:/]\d+)*(?:[.](?!\.)|-[^\W\d_]+)?'
 # emoswithspaces emoticon=r'[=:;8][\'-]*(?:\s?\)+|\s?\(+|\s?\]+|\s?\[+|\sd\b|\sp\b|d+\b|p+\b|s+\b|o+\b|/|\\|\$|\*+)|-\.-|\^_\^|\([\W]+\)|<3|</3|<\\3|\\o/'
 emoticon=r'[=:;8][\'-]*(?:\)+|\(+|\]+|\[+|d\b|p\b|d+\b|p+\b|s+\b|o+\b|/|\\|\$|\*+)|-\.-|\^_\^|\([^\w\s]+\)|<3|</3|<\\3|\\o/'
-word=ur'(?:[*]{2,})?\w+(?:[@­\'-]\w+|[*]+\w+)*(?:[*]{2,})?'
+word=r'(?:[*]{2,})?\w+(?:[@­\'-]\w+|[*]+\w+)*(?:[*]{2,})?'
 
 langs={
   'hr':{
-    'abbrev':ur'|'.join(abbrevs['hr']['B']+abbrevs['hr']['N']+abbrevs['hr']['S']),
+    'abbrev':r'|'.join(abbrevs['hr']['B']+abbrevs['hr']['N']+abbrevs['hr']['S']),
     'num':num,
     'url':r'https?://[-\w/%]+(?:[.#?=&@;][-\w/%]+)+|\b\w+\.(?:\w+\.)?(?:si|hr|com|org|rs|ba|gl|me)/?\b',
     'htmlesc':r'&#?[a-z0-9]+;',
@@ -49,7 +49,7 @@ langs={
   },
 
   'sr':{
-    'abbrev':ur'|'.join(abbrevs['sr']['B']+abbrevs['sr']['N']+abbrevs['sr']['S']),
+    'abbrev':r'|'.join(abbrevs['sr']['B']+abbrevs['sr']['N']+abbrevs['sr']['S']),
     'num':num,
     'url':r'https?://[-\w/%]+(?:[.#?=&@;][-\w/%]+)+|\b\w+\.(?:\w+\.)?(?:si|hr|com|org|rs|ba|gl|me)/?\b',
     'htmlesc':r'&#?[a-z0-9]+;',
@@ -67,7 +67,7 @@ langs={
   },
 
   'sl':{
-    'abbrev':ur'|'.join(abbrevs['sl']['B']+abbrevs['sl']['N']+abbrevs['sl']['S']),
+    'abbrev':r'|'.join(abbrevs['sl']['B']+abbrevs['sl']['N']+abbrevs['sl']['S']),
     'num':num,
     'url':r'https?://[-\w/%]+(?:[.#?=&@;][-\w/%]+)+|\b\w+\.(?:\w+\.)?(?:si|hr|com|org|rs|ba|gl|me)/?\b',
     'htmlesc':r'&#?[a-z0-9]+;',
@@ -183,4 +183,4 @@ if __name__=='__main__':
   par_id=0
   for line in sys.stdin:
     par_id+=1
-    sys.stdout.write(represent_tomaz(process[mode](tokenizer,line.decode('utf8'),lang),par_id).encode('utf8'))
+    sys.stdout.write(represent_tomaz(process[mode](tokenizer,line,lang),par_id))
